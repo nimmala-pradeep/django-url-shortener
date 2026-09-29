@@ -1,0 +1,63 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Snip: short links with click stats</title>
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{% static 'shortener/style.css' %}">
+</head>
+<body>
+  <main class="page">
+    <h1>Paste a long link.<br>Get a short one.</h1>
+
+    <form id="shorten-form" class="panel" novalidate>
+      <label for="url">Long URL</label>
+      <input id="url" name="url" type="url" inputmode="url" placeholder="https://example.com/a/very/long/path?with=params" required autocomplete="off">
+
+      <div class="row">
+        <div class="field">
+          <label for="alias">Custom alias <span class="hint">optional</span></label>
+          <div class="prefixed">
+            <span class="prefix" id="host-prefix" aria-hidden="true"></span>
+            <input id="alias" name="alias" type="text" placeholder="my-link" maxlength="32" autocomplete="off" spellcheck="false">
+          </div>
+        </div>
+        <div class="field">
+          <label for="expires">Expires</label>
+          <select id="expires" name="expires">
+            <option value="">Never</option>
+            <option value="1">After 1 day</option>
+            <option value="7">After 7 days</option>
+            <option value="30">After 30 days</option>
+            <option value="90">After 90 days</option>
+          </select>
+        </div>
+      </div>
+
+      <p id="form-error" class="error" role="alert" hidden></p>
+      <button id="submit" type="submit">Shorten link</button>
+    </form>
+
+    <section id="result" class="result" aria-live="polite" hidden>
+      <a id="result-link" class="result-link" target="_blank" rel="noopener"></a>
+      <button id="copy" type="button" class="copy">Copy</button>
+    </section>
+
+    <section class="history" aria-labelledby="history-title">
+      <div class="history-head">
+        <h2 id="history-title">Your links</h2>
+        <button id="clear" type="button" class="quiet" hidden>Clear list</button>
+      </div>
+      <p id="empty" class="empty">Links you create in this browser show up here with their click counts.</p>
+      <ul id="history-list" class="history-list"></ul>
+    </section>
+  </main>
+
+  <script src="{% static 'shortener/app.js' %}" defer></script>
+</body>
+</html>
